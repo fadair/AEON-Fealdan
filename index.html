@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minimal Mapbox Map</title>
+
+  <link
+    href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #map { height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZmFkYWlyIiwiYSI6ImNtZTV0bnJmaTEwOG8yaXNjc2pkb3Y4NWoifQ.64vUrUuDN2KBb8KVb8NqwQ';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {},
+        layers: []
+      },
+      center: [-0.1276, 51.5074],
+      zoom: 10
+    });
+
+    map.on('load', () => {
+      const bounds = [
+        [-180, -85], // southwest corner
+        [180, 85]    // northeast corner
+      ];
+
+      map.addSource('local-image', {
+        type: 'image',
+        url: 'Fealdan_v5.webp',
+        coordinates: [
+          [bounds[0][0], bounds[1][1]], // top-left
+          [bounds[1][0], bounds[1][1]], // top-right
+          [bounds[1][0], bounds[0][1]], // bottom-right
+          [bounds[0][0], bounds[0][1]]  // bottom-left
+        ]
+      });
+      map.addLayer({
+        id: 'local-image-layer',
+        type: 'raster',
+        source: 'local-image',
+        paint: { 'raster-opacity': 1 }
+      });
+      map.fitBounds(bounds);
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    });
+  </script>
+</body>
+</html>
