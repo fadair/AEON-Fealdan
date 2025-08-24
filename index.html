@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minimal Mapbox Map</title>
+  <title>A map of Fealdan</title>
 
   <link
     href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
@@ -29,35 +29,40 @@
         layers: []
       },
       center: [-0.1276, 51.5074],
-      zoom: 10
+      zoom: 1,
+      maxBounds: [
+        [-180, -85],
+        [180, 85]
+      ] 
     });
 
     map.on('load', () => {
       const bounds = [
-        [-180, -85], // southwest corner
-        [180, 85]    // northeast corner
+        [-180, -85],
+        [180, 85]
       ];
-
+      
       map.addSource('local-image', {
         type: 'image',
         url: 'Fealdan_v5.webp',
         coordinates: [
-          [bounds[0][0], bounds[1][1]], // top-left
-          [bounds[1][0], bounds[1][1]], // top-right
-          [bounds[1][0], bounds[0][1]], // bottom-right
-          [bounds[0][0], bounds[0][1]]  // bottom-left
+          [bounds[0][0], bounds[1][1]],
+          [bounds[1][0], bounds[1][1]],
+          [bounds[1][0], bounds[0][1]],
+          [bounds[0][0], bounds[0][1]]
         ]
       });
+    
       map.addLayer({
         id: 'local-image-layer',
         type: 'raster',
         source: 'local-image',
         paint: { 'raster-opacity': 1 }
       });
-      map.fitBounds(bounds);
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    });
+      map.fitBounds(bounds);
+      map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      });
   </script>
 </body>
 </html>
